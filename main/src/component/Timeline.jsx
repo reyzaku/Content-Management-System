@@ -1,5 +1,6 @@
 import React from 'react';
-import Cover from '../media/cover.jpg';
+
+import ArticleCard from './ArticleCard';
 
 const Timeline = () => {
 	return (
@@ -11,36 +12,9 @@ const Timeline = () => {
 			</div>
 			<div className="basis-1/2">
 				{/* Article Card */}
-				<div className="bg-white rounded-xl shadow-md">
-					<img src={Cover} alt="" className="rounded-t-xl" />
-					<div className="py-12 px-8">
-						<div className="flex flex-row gap-4 items-center mb-8">
-							<div className="rounded-full w-8 h-8 bg-black"></div>
-							<p className="text-sm">Rafi Abdilah</p>
-						</div>
-						{/* Article Title */}
-						<h3 className="text-2xl font-semibold">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
-							sequi itaque inventore distinctio reiciendis magni exceptu
-						</h3>
-						{/* Article Tags */}
-						<div className="flex flex-row gap-4 mt-4">
-							<button className="text-blue-500 bg-blue-100 rounded-lg p-2">
-								#Javascript
-							</button>
-							<button className="text-red-500 bg-red-100 rounded-lg p-2">
-								#React
-							</button>
-							<button className="text-yellow-500 bg-yellow-100 rounded-lg p-2">
-								#Webdev
-							</button>
-							<button className="text-purple-500 bg-purple-100 rounded-lg p-2">
-								#Frontend
-							</button>
-						</div>
-						<div className="flex flex-row mt-8"></div>
-					</div>
-				</div>
+				<ArticleCard/>
+				<ArticleCard/>
+				<ArticleCard/>
 			</div>
       {/* Widget */}
 			<div className='rounded-xl bg-blue-100 shadow-md h-1/4 basis-1/5 py-8 px-8'>

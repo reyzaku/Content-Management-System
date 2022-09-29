@@ -11,7 +11,7 @@ module.exports = {
         'sans': ['Poppins', 'sans-serif']
       },
       backgroundImage: {
-        'cover': "url(./src/media/cover.jpg)"
+        'cover': "url(../src/media/cover.jpg)"
       }
     },
   },
