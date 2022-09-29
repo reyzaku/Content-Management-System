@@ -1,14 +1,12 @@
 import React from 'react'
-import Sidebar from '../component/Sidebar';
-import SideWidget from '../component/SideWidget';
+import Navbar from '../component/Navbar';
 import Timeline from '../component/Timeline';
 
 const Homepage = () => {
   return (
-    <div className='flex flex-row gap-10'>
-        <Sidebar/>
+    <div className=''>
+        <Navbar/>
         <Timeline/>
-        <SideWidget/>
     </div>
   )
 }
