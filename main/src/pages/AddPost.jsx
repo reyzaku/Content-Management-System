@@ -1,39 +1,164 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import ElementContainer from '../component/ElementContainer';
-import LoginForm from '../component/LoginForm';
-import Paragraf from '../component/Paragraf';
 
 const AddPost = () => {
-	const [show, setShow] = useState(false);
-	const [element, setElement] = useState([]);
-	const ButtonHandle = () => {
-		setShow(!true);
-	};
-
-	const elementHandle = (e) => {
-        let name = e.target.name
-        setElement(name)
-        console.log(element)
-	};
-
 	return (
-		<div>
-			<button className="bg-blue-500 px-8 py-2" onClick={ButtonHandle}>
-				Click me
-			</button>
-			{show && (
-				<div>
-					<button className="bg-red-500 p-4" name="subheading" onClick={elementHandle}>
-						Subheading
-					</button>
-					<button className="bg-red-500 p-4" name="paragraf" onClick={elementHandle}>Paragraf</button>
-					<button className="bg-red-500 p-4" name="image" onClick={elementHandle}>Image</button>
+		<div className="h-full pt-24 mx-60 mb-20 mt-10">
+			
+			{/* Post Title Input Form */}
+			<div className="block mb-16">
+				<p className="text-3xl font-thin mb-8">Post Title</p>
+				<input
+					name="title"
+					type="text"
+					className="text-5xl font-bold w-full"
+					placeholder="Write your title here"
+				/>
+			</div>
+			{/* Tags Input Form */}
+			<div className="block mb-16">
+				<p className="text-3xl font-thin mb-8">Tags</p>
+				<input
+					name="tags"
+					type="text"
+					className="text-2xl w-full"
+					placeholder="Add Tags to your Post here"
+				/>
+			</div>
+			{/* Cover Image Input Form */}
+			<div className="block mb-16">
+				<p className="text-3xl font-thin mb-8">Cover Image</p>
+				<div className='flex justify-center py-16 border border-slate-300 rounded-lg bg-[url("https://picsum.photos/seed/picsum/200/300")] bg-cover'>
+					<input
+						name="image"
+						type="file"
+						className="text-lg file:mr-4 file:py-2 file:px-4
+									file:rounded-full file:border-0
+									file:text-sm file:font-semibold
+									file:bg-blue-50 file:text-blue-700
+									hover:file:bg-violet-100"
+						placeholder="Upload Image Cover"
+					/>
 				</div>
-			)}
-			<ElementContainer test={false}/>
-            
+			</div>
+			{/* Element Menu Button */}
+			<div className="block mb-16">
+				<div className="flex justify-center">
+					<button className="w-16 h-16 border border-slate-300 rounded-full flex justify-center items-center hover:border-slate-500">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth={1.5}
+							stroke="currentColor"
+							className="w-6 h-6 text-slate-500"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M12 4.5v15m7.5-7.5h-15"
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
+			{/* When Element Menu Button CLicked, Show this */}
+			{/* Element Menu Button */}
+			<div className="flex flex-row gap-4 mt-4 justify-center mb-16">
+				{/* Paragraf */}
+				<button className="text-blue-500 bg-blue-100 rounded-lg p-2">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={1.5}
+						stroke="currentColor"
+						className="w-6 h-6"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+						/>
+					</svg>
+				</button>
+
+				{/* Sub Title */}
+				<button className="text-red-500 bg-red-100 rounded-lg p-2">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={1.5}
+						stroke="currentColor"
+						className="w-6 h-6"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M3.75 9h16.5m-16.5 6.75h16.5"
+						/>
+					</svg>
+				</button>
+
+				{/* Image */}
+				<button className="text-yellow-500 bg-yellow-100 rounded-lg p-2">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={1.5}
+						stroke="currentColor"
+						className="w-6 h-6"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<div className="block mx-20 mb-16 border-b pb-2">
+				<p className="text-3xl font-thin mb-8">Sub Title</p>
+				<input
+					name="paragraf"
+					type="text"
+					className="text-xl w-full font-semibold"
+					placeholder="Write your Sub Title Here"
+				/>
+			</div>
+
+			<div className="block mx-20 mb-16 border-b pb-2">
+				<p className="text-3xl font-thin mb-8">Paragraf</p>
+				<input
+					name="paragraf"
+					type="text"
+					className="text-xl w-full"
+					placeholder="Write your Paragraf Here"
+				/>
+			</div>
+			
+			<div className="block mx-20 mb-16 pb-2">
+				<p className="text-3xl font-thin mb-8">Image</p>
+				<div className="flex justify-center border py-16 rounded-xl">
+					<input
+						name="image"
+						type="file"
+						className="text-lg file:mr-4 file:py-2 file:px-4
+									file:rounded-full file:border-0
+									file:text-sm file:font-semibold
+									file:bg-blue-50 file:text-blue-700
+									hover:file:bg-violet-100"
+						placeholder="Upload Image Cover"
+					/>
+				</div>
+			</div>
+
+			{/* Button Create Post */}
+			<div className="block float-right">
+				<button className="px-12 py-3 bg-blue-500 text-white rounded-xl shadow-lg">Create Post</button>
+			</div>
 		</div>
 	);
 };
