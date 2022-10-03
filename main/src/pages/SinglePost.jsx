@@ -18,7 +18,7 @@ const SinglePost = () => {
 						className="text-blue-500 bg-blue-100 rounded-lg p-2"
 						key={index + 1}
 					>
-						{item}
+						{"#" + item.charAt(1).toUpperCase() + item.slice(2)}
 					</button>
 				))}
 			</div>

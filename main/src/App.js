@@ -1,11 +1,12 @@
 import Navbar from "./component/Navbar";
-import SinglePost from "./pages/SinglePost";
+import AddPost from "./pages/AddPost";
+import SinglePost from "./pages/SinglePost"
 
 function App() {
   return (
     <>
       <Navbar/>
-      <SinglePost/>
+      <AddPost/>
     </>
   );
 }
