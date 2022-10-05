@@ -3,49 +3,50 @@ import { useState } from 'react';
 import AddSubtitle from '../component/addpost-component/AddSubtitle'
 import AddParagraf from '../component/addpost-component/AddParagraf'
 import AddImage from '../component/addpost-component/AddImage'
+import { useDispatch, useSelector } from 'react-redux';
+import { addElement, deleteDraft } from '../redux/ArticleReducers';
 
 const AddPost = () => {
-	const [article, setArticle] = useState({});
 	const [show, setShow] = useState(false);
-	const [element, setElement] = useState([]);
-	const pull_data = (data) => {
-		setArticle([...element, data]);
-		console.log(data); // LOGS DATA FROM CHILD (My name is Dean Winchester... &)
-		console.log(article)
-	};
+	const [article, setArticle] = useState({})
+	const dispatch = useDispatch()
+	const elements = useSelector(state => state.article.element)
+	const id = useSelector(state => state.article.id)
+	console.log(article)
 
 	const showMenu = () => {
 		setShow(true);
 	};
 
 	const closeMenu = () => {
-		console.log(element);
+		dispatch(deleteDraft())
 	};
 
-	const addElement = (e) => {
+	const addBlocks = (e) => {
 		e.preventDefault();
 		let name = e.target.name;
 		switch (name) {
 			case 'paragraf':
-				setElement([...element, { type: name, content: '' }]);
-				console.log('paragraf' + name);
+				dispatch(addElement({_id: id, type: "paragraf", content: ""}))
 				setShow(false);
 				break;
 			case 'subtitle':
-				setElement([...element, { type: name, content: '' }]);
-				console.log('subtitle' + name);
+				dispatch(addElement({_id: id, type: "subtitle", content: ""}))
 				setShow(false);
 				break;
 			case 'image':
-				setElement([...element, { type: name, content: '' }]);
-				console.log('image' + name);
+				dispatch(addElement({_id: id, type: "image", content: ""}))
 				setShow(false);
 				break;
 			default:
 				break;
 		}
-		// setElement([...element, {}])
 	};
+
+	const createPost = (e) => {
+		setArticle({...article, element: elements})
+		console.log(article)
+	}
 
 	return (
 		<div className="h-full pt-24 mx-60 mb-20 mt-10">
@@ -57,6 +58,7 @@ const AddPost = () => {
 					type="text"
 					className="text-5xl font-bold w-full"
 					placeholder="Write your title here"
+					onChange={(e) => setArticle({...article, title: e.target.value})}
 				/>
 			</div>
 			{/* Tags Input Form */}
@@ -67,6 +69,7 @@ const AddPost = () => {
 					type="text"
 					className="text-2xl w-full"
 					placeholder="Add Tags to your Post here"
+					onChange={(e) => setArticle({...article, tags: e.target.value.split(" ")})}
 				/>
 			</div>
 			{/* Cover Image Input Form */}
@@ -85,6 +88,7 @@ const AddPost = () => {
 					/>
 				</div>
 			</div>
+
 			{/* Element Menu Button */}
 			<div className="block mb-16">
 				<div className="flex justify-center">
@@ -117,7 +121,7 @@ const AddPost = () => {
 					<button
 						className="text-blue-500 bg-blue-100 rounded-lg p-2"
 						name="paragraf"
-						onClick={addElement}
+						onClick={addBlocks}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +143,7 @@ const AddPost = () => {
 					<button
 						className="text-red-500 bg-red-100 rounded-lg p-2"
 						name="subtitle"
-						onClick={addElement}
+						onClick={addBlocks}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +165,7 @@ const AddPost = () => {
 					<button
 						className="text-yellow-500 bg-yellow-100 rounded-lg p-2"
 						name="image"
-						onClick={addElement}
+						onClick={addBlocks}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -181,14 +185,15 @@ const AddPost = () => {
 				</div>
 			)}
 
-			{element.map((item,index) => {
+			{/* Show Mapping Element which have been added */}
+			{elements.map((item,index) => {
 				switch (item.type) {
 					case 'subtitle':
-						return <AddSubtitle key={index + 1} func={pull_data}/>;
+						return <AddSubtitle key={index + 1} id={item._id}/>;
 					case 'paragraf':
-						return <AddParagraf key={index + 1} />;
+						return <AddParagraf key={index + 1} id={item._id}/>;
 					case 'image':
-						return <AddImage key={index + 1} />;
+						return <AddImage key={index + 1} id={item._id}/>;
 					default:
 						return <></>;
 				}
@@ -198,9 +203,16 @@ const AddPost = () => {
 			<div className="block float-right">
 				<button
 					className="px-12 py-3 bg-blue-500 text-white rounded-xl shadow-lg"
-					onClick={closeMenu}
+					onClick={createPost}
 				>
 					Create Post
+				</button>
+
+				<button
+					className="px-12 py-3 bg-red-500 text-white rounded-xl shadow-lg"
+					onClick={closeMenu}
+				>
+					Delete Post
 				</button>
 			</div>
 		</div>
