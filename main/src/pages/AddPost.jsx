@@ -43,7 +43,7 @@ const AddPost = () => {
 		}
 	};
 
-	const createPost = (e) => {
+	const createPost = async (e) => {
 		setArticle({...article, element: elements})
 		console.log(article)
 	}
