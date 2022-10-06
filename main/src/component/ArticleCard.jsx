@@ -3,7 +3,7 @@ import Cover from '../media/cover.jpg';
 
 const ArticleCard = () => {
 	return (
-		<div className="bg-white rounded-xl shadow-md mb-4">
+		<div className="bg-white rounded-lg shadow-sm mb-4">
 			<img
 				src={Cover}
 				alt=""
