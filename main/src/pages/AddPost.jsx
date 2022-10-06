@@ -4,15 +4,17 @@ import AddSubtitle from '../component/addpost-component/AddSubtitle'
 import AddParagraf from '../component/addpost-component/AddParagraf'
 import AddImage from '../component/addpost-component/AddImage'
 import { useDispatch, useSelector } from 'react-redux';
-import { addElement, deleteDraft } from '../redux/ArticleReducers';
+import { addElement, deleteDraft, editTags, editTitle } from '../redux/ArticleReducers';
+import { authRequest } from '../utils/AxiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const AddPost = () => {
 	const [show, setShow] = useState(false);
-	const [article, setArticle] = useState({})
 	const dispatch = useDispatch()
 	const elements = useSelector(state => state.article.element)
+	const article = useSelector(state => state.article)
 	const id = useSelector(state => state.article.id)
-	console.log(article)
+	let navigate = useNavigate();
 
 	const showMenu = () => {
 		setShow(true);
@@ -44,8 +46,14 @@ const AddPost = () => {
 	};
 
 	const createPost = async (e) => {
-		setArticle({...article, element: elements})
-		console.log(article)
+		authRequest.post("/articles", article).then(
+			() => {
+				navigate("/")
+				
+			}
+		).catch(err => {
+			console.log(err)
+		})
 	}
 
 	return (
@@ -58,7 +66,7 @@ const AddPost = () => {
 					type="text"
 					className="text-5xl font-bold w-full"
 					placeholder="Write your title here"
-					onChange={(e) => setArticle({...article, title: e.target.value})}
+					onChange={(e) => dispatch(editTitle(e.target.value))}
 				/>
 			</div>
 			{/* Tags Input Form */}
@@ -69,7 +77,7 @@ const AddPost = () => {
 					type="text"
 					className="text-2xl w-full"
 					placeholder="Add Tags to your Post here"
-					onChange={(e) => setArticle({...article, tags: e.target.value.split(" ")})}
+					onChange={(e) => dispatch(editTags(e.target.value.split(" ")))}
 				/>
 			</div>
 			{/* Cover Image Input Form */}
@@ -88,6 +96,22 @@ const AddPost = () => {
 					/>
 				</div>
 			</div>
+
+			
+
+			{/* Show Mapping Element which have been added */}
+			{elements.map((item,index) => {
+				switch (item.type) {
+					case 'subtitle':
+						return <AddSubtitle key={index + 1} id={item._id}/>;
+					case 'paragraf':
+						return <AddParagraf key={index + 1} id={item._id}/>;
+					case 'image':
+						return <AddImage key={index + 1} id={item._id}/>;
+					default:
+						return <></>;
+				}
+			})}
 
 			{/* Element Menu Button */}
 			<div className="block mb-16">
@@ -113,6 +137,7 @@ const AddPost = () => {
 					</button>
 				</div>
 			</div>
+
 			{/* When Element Menu Button CLicked, Show this */}
 			{/* Element Menu Button */}
 			{show && (
@@ -184,20 +209,6 @@ const AddPost = () => {
 					</button>
 				</div>
 			)}
-
-			{/* Show Mapping Element which have been added */}
-			{elements.map((item,index) => {
-				switch (item.type) {
-					case 'subtitle':
-						return <AddSubtitle key={index + 1} id={item._id}/>;
-					case 'paragraf':
-						return <AddParagraf key={index + 1} id={item._id}/>;
-					case 'image':
-						return <AddImage key={index + 1} id={item._id}/>;
-					default:
-						return <></>;
-				}
-			})}
 
 			{/* Button Create Post */}
 			<div className="block float-right">

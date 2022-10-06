@@ -1,13 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editElement } from '../../redux/ArticleReducers';
 
 const AddSubtitle = (props) => {
+	const subtitle = useSelector(state => state.article.element[props.id])
 	const dispatch = useDispatch()
 
 	return (
 		<div className="block mx-20 mb-16 border-b pb-2">
-			<p className="text-3xl font-thin mb-8">Sub Title</p>
+			{subtitle.content === null &&(
+				<p className="text-3xl font-thin mb-8">Sub Title</p>
+			)}
 			<input
 				name="subtitle"
 				type="text"

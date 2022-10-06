@@ -108,7 +108,7 @@ const AddImage = (props) => {
 			)}
 			{status === "uploaded" && (
 				<div className='flex justify-center'>
-					<img src={image.content} alt="" className="max-w-2xl" />
+					<img src={image.content} alt="" className="max-w-2xl rounded-lg" />
 				</div>
 			)}
 		</div>

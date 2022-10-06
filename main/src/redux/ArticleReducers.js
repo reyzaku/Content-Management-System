@@ -17,6 +17,15 @@ const articleSlice = createSlice({
         editElement: (state, action) => {
             state.element.map(item => item._id === action.payload._id ? item.content = action.payload.content : "")
         },
+        editTitle: (state, action) => {
+            state.title = action.payload
+        },
+        editTags: (state, action) => {
+            state.tags = action.payload
+        },
+        editCoverImage: (state, action) => {
+            state.cover_image = action.payload
+        },
         removeElement: (state, action) => {
             state.element = state.element.filter(item => item._id !== action.payload._id)
         },
@@ -27,5 +36,5 @@ const articleSlice = createSlice({
     }
 });
 
-export const {addElement, editElement, removeElement, deleteDraft} = articleSlice.actions;
+export const {addElement, editElement, editTitle, editTags, editCoverImage, removeElement, deleteDraft} = articleSlice.actions;
 export default articleSlice.reducer;
