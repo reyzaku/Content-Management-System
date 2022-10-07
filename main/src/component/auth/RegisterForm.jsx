@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import Logo from '../../media/Logo.png';
 import { publicRequest } from '../../utils/AxiosInstance';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../redux/AuthCall';
 
 const RegisterForm = () => {
@@ -30,7 +30,7 @@ const RegisterForm = () => {
 				<div className="flex item-center justify-center">
 					<img src={Logo} alt="" className="w-1/2 my-10 " />
 				</div>
-				<h3 className="text-center text-lg font-normal">Welcome to Foxhub</h3>
+				<h3 className="text-center text-lg font-normal">Welcome to Foxhub &#128516;</h3>
 				<h3 className="text-center text-2xl font-semibold mb-10">
 					Register your account
 				</h3>
@@ -111,15 +111,17 @@ const RegisterForm = () => {
 							onClick={RegisterHandle}
 							className="w-full bg-blue-600 py-2 text-white rounded shadow-lg"
 						>
-							Register
+							Register &#128073;
 						</button>
 						<h3 className="text-center text-sm font-normal my-2">Or</h3>
-						<button
-							className="w-full bg-white py-2 text-blue-600 border border-blue-600 rounded"
-							
-						>
-							Sign in
-						</button>
+						<Link to={"/login"}>
+							<button
+								className="w-full bg-white py-2 text-blue-600 border border-blue-600 rounded"
+								
+							>
+								Sign in &#127881;
+							</button> 
+						</Link>
 					</div>
 				{/* </form> */}
 			</div>

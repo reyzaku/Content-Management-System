@@ -12,8 +12,8 @@ const Timeline = () => {
 		const getArticle = async () => {
 			try {
 				const res = await publicRequest.get(`/articles`);
-				setArticle(res.data);
-				console.log(article)
+				setArticle(res.data.data);
+				console.log(res.data)
 			} catch (err) {}
 		};
 		getArticle();
@@ -23,10 +23,10 @@ const Timeline = () => {
 			{article.length < 1 && (
 					<Error401 />
 			)}
-			{article.length < 1 && article.map((item, index) => (
+			{article?.map((item, index) => (
 				<div key={index + 1}>
 					<Link to={`/article/${item._id}`}>
-						<ArticleCard />
+						<ArticleCard data={item}/>
 					</Link>
 				</div>
 			))}

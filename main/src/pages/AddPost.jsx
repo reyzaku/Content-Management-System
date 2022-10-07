@@ -1,27 +1,101 @@
 import React from 'react';
 import { useState } from 'react';
-import AddSubtitle from '../component/addpost-component/AddSubtitle'
-import AddParagraf from '../component/addpost-component/AddParagraf'
-import AddImage from '../component/addpost-component/AddImage'
+import AddSubtitle from '../component/addpost-component/AddSubtitle';
+import AddParagraf from '../component/addpost-component/AddParagraf';
+import AddImage from '../component/addpost-component/AddImage';
 import { useDispatch, useSelector } from 'react-redux';
-import { addElement, deleteDraft, editTags, editTitle } from '../redux/ArticleReducers';
+import {
+	addElement,
+	deleteDraft,
+	editCoverImage,
+	editTags,
+	editTitle,
+} from '../redux/ArticleReducers';
 import { authRequest } from '../utils/AxiosInstance';
 import { useNavigate } from 'react-router-dom';
+import {
+	getStorage,
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+} from 'firebase/storage';
+import app from '../firebase';
 
 const AddPost = () => {
 	const [show, setShow] = useState(false);
-	const dispatch = useDispatch()
-	const elements = useSelector(state => state.article.element)
-	const article = useSelector(state => state.article)
-	const id = useSelector(state => state.article.id)
+	const [error, setError] = useState(false)
+	const dispatch = useDispatch();
+	const elements = useSelector((state) => state.article.element);
+	const article = useSelector((state) => state.article);
+	const id = useSelector((state) => state.article.id);
 	let navigate = useNavigate();
+
+	//FOr Image Uploading
+	//=================================================================//
+	const [file, setFile] = useState(null);
+	const [status, setStatus] = useState('ready');
+	const [percentage, setPercentage] = useState(0);
+	const image = useSelector((state) => state.article.cover_image);
+
+	const UploadImage = () => {
+		if (file === null) {
+			setError(true)
+		} else {
+			const fileName = new Date().getTime() + file.name;
+			const storage = getStorage(app);
+			const storageRef = ref(storage, fileName);
+
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			setStatus('uploading');
+			// Register three observers:
+			// 1. 'state_changed' observer, called any time the state changes
+			// 2. Error observer, called on failure
+			// 3. Completion observer, called on successful completion
+			uploadTask.on(
+				'state_changed',
+				(snapshot) => {
+					// Observe state change events such as progress, pause, and resume
+					// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+					const progress =
+						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log('Upload is ' + progress + '% done');
+					setPercentage(progress);
+					switch (snapshot.state) {
+						case 'paused':
+							console.log('Upload is paused');
+							break;
+						case 'running':
+							console.log('Upload is running');
+							break;
+						default:
+							break;
+					}
+				},
+				(error) => {
+					// Handle unsuccessful uploads
+				},
+				() => {
+					// Handle successful uploads on complete
+					// For instance, get the download URL: https://firebasestorage.googleapis.com/...
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						dispatch(editCoverImage(downloadURL));
+						setStatus('uploaded');
+						setError(false)
+						console.log('File available at', downloadURL);
+					});
+				}
+			);
+		}
+	};
+	//=================================================================//
+	// END OF UPLOADING SECTION //
 
 	const showMenu = () => {
 		setShow(true);
 	};
 
 	const closeMenu = () => {
-		dispatch(deleteDraft())
+		dispatch(deleteDraft());
 	};
 
 	const addBlocks = (e) => {
@@ -29,15 +103,15 @@ const AddPost = () => {
 		let name = e.target.name;
 		switch (name) {
 			case 'paragraf':
-				dispatch(addElement({_id: id, type: "paragraf", content: ""}))
+				dispatch(addElement({ _id: id, type: 'paragraf', content: '' }));
 				setShow(false);
 				break;
 			case 'subtitle':
-				dispatch(addElement({_id: id, type: "subtitle", content: ""}))
+				dispatch(addElement({ _id: id, type: 'subtitle', content: '' }));
 				setShow(false);
 				break;
 			case 'image':
-				dispatch(addElement({_id: id, type: "image", content: ""}))
+				dispatch(addElement({ _id: id, type: 'image', content: '' }));
 				setShow(false);
 				break;
 			default:
@@ -46,15 +120,15 @@ const AddPost = () => {
 	};
 
 	const createPost = async (e) => {
-		authRequest.post("/articles", article).then(
-			() => {
-				navigate("/")
-				
-			}
-		).catch(err => {
-			console.log(err)
-		})
-	}
+		authRequest
+			.post('/articles', article)
+			.then(() => {
+				navigate('/');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	return (
 		<div className="h-full pt-24 mx-60 mb-20 mt-10">
@@ -77,37 +151,61 @@ const AddPost = () => {
 					type="text"
 					className="text-2xl w-full"
 					placeholder="Add Tags to your Post here"
-					onChange={(e) => dispatch(editTags(e.target.value.split(" ")))}
+					onChange={(e) => dispatch(editTags(e.target.value.split(' ')))}
 				/>
 			</div>
 			{/* Cover Image Input Form */}
 			<div className="block mb-16">
 				<p className="text-3xl font-thin mb-8">Cover Image</p>
-				<div className='flex justify-center py-16 border border-slate-300 rounded-lg bg-[url("https://picsum.photos/seed/picsum/200/300")] bg-cover'>
-					<input
-						name="image"
-						type="file"
-						className="text-lg file:mr-4 file:py-2 file:px-4
-									file:rounded-full file:border-0
-									file:text-sm file:font-semibold
-									file:bg-blue-50 file:text-blue-700
-									hover:file:bg-violet-100"
-						placeholder="Upload Image Cover"
-					/>
-				</div>
+				{status === 'ready' && (
+					<>
+						<div className="flex justify-center py-16 border border-slate-300 rounded-lg">
+							<input
+								name="image"
+								type="file"
+								className="text-lg file:mr-4 file:py-2 file:px-4
+										file:rounded-full file:border-0
+										file:text-sm file:font-semibold
+										file:bg-blue-50 file:text-blue-700
+										hover:file:bg-violet-100"
+								placeholder="Upload Image Cover"
+								onChange={(e) => setFile(e.target.files[0])}
+							/>
+						</div>
+						{error ? <p className='text-red-500'>Please insert your image first</p> : <></>}
+						<button
+							className="border border-blue-500 px-8 py-2 mt-4 text-blue-500 rounded-full"
+							onClick={UploadImage}
+						>
+							Upload Image
+						</button>
+					</>
+				)}
+				{status === 'uploading' && (
+					<div>
+						<div className="flex justify-center border py-16 rounded-xl px-4">
+							<h1 className="text-blue-500 text-lg">
+								Uploading {Math.round(percentage)} %
+							</h1>
+						</div>
+					</div>
+				)}
+				{status === 'uploaded' && (
+					<div className="flex justify-center">
+						<img src={image} alt="" className="max-w-2xl rounded-lg w-full h-64 object-cover" />
+					</div>
+				)}
 			</div>
 
-			
-
 			{/* Show Mapping Element which have been added */}
-			{elements.map((item,index) => {
+			{elements.map((item, index) => {
 				switch (item.type) {
 					case 'subtitle':
-						return <AddSubtitle key={index + 1} id={item._id}/>;
+						return <AddSubtitle key={index + 1} id={item._id} />;
 					case 'paragraf':
-						return <AddParagraf key={index + 1} id={item._id}/>;
+						return <AddParagraf key={index + 1} id={item._id} />;
 					case 'image':
-						return <AddImage key={index + 1} id={item._id}/>;
+						return <AddImage key={index + 1} id={item._id} />;
 					default:
 						return <></>;
 				}
