@@ -23,7 +23,7 @@ import app from '../firebase';
 
 const AddPost = () => {
 	const [show, setShow] = useState(false);
-	const [error, setError] = useState(false)
+	const [error, setError] = useState(false);
 	const dispatch = useDispatch();
 	const elements = useSelector((state) => state.article.element);
 	const article = useSelector((state) => state.article);
@@ -39,7 +39,7 @@ const AddPost = () => {
 
 	const UploadImage = () => {
 		if (file === null) {
-			setError(true)
+			setError(true);
 		} else {
 			const fileName = new Date().getTime() + file.name;
 			const storage = getStorage(app);
@@ -80,7 +80,7 @@ const AddPost = () => {
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 						dispatch(editCoverImage(downloadURL));
 						setStatus('uploaded');
-						setError(false)
+						setError(false);
 						console.log('File available at', downloadURL);
 					});
 				}
@@ -118,6 +118,12 @@ const AddPost = () => {
 				break;
 		}
 	};
+	
+	const deleteImage = () => {
+		dispatch(editCoverImage(''))
+		setStatus("ready")
+		setFile(null)
+	}
 
 	const createPost = async (e) => {
 		authRequest
@@ -157,6 +163,7 @@ const AddPost = () => {
 			{/* Cover Image Input Form */}
 			<div className="block mb-16">
 				<p className="text-3xl font-thin mb-8">Cover Image</p>
+
 				{status === 'ready' && (
 					<>
 						<div className="flex justify-center py-16 border border-slate-300 rounded-lg">
@@ -172,7 +179,11 @@ const AddPost = () => {
 								onChange={(e) => setFile(e.target.files[0])}
 							/>
 						</div>
-						{error ? <p className='text-red-500'>Please insert your image first</p> : <></>}
+						{error ? (
+							<p className="text-red-500">Please insert your image first</p>
+						) : (
+							<></>
+						)}
 						<button
 							className="border border-blue-500 px-8 py-2 mt-4 text-blue-500 rounded-full"
 							onClick={UploadImage}
@@ -191,9 +202,21 @@ const AddPost = () => {
 					</div>
 				)}
 				{status === 'uploaded' && (
-					<div className="flex justify-center">
-						<img src={image} alt="" className="max-w-2xl rounded-lg w-full h-64 object-cover" />
-					</div>
+					<>
+						<div className="flex justify-center">
+							<img
+								src={image}
+								alt=""
+								className="max-w-2xl rounded-lg w-full h-64 object-cover"
+							/>
+						</div>
+						<button
+							className="border border-blue-500 px-8 py-2 mt-4 text-blue-500 rounded-full"
+							onClick={deleteImage}
+						>
+							Change Image
+						</button>
+					</>
 				)}
 			</div>
 

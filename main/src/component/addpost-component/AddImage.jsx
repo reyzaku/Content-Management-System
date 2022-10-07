@@ -7,27 +7,29 @@ import {
 } from 'firebase/storage';
 import app from '../../firebase';
 import { useState } from 'react';
-import { editElement } from '../../redux/ArticleReducers';
+import { editElement, removeElement } from '../../redux/ArticleReducers';
 import { useDispatch, useSelector } from 'react-redux';
 
 const AddImage = (props) => {
-	const image = useSelector(state => state.article.element[props.id])
+	const image = useSelector((state) => state.article.element[props.id]);
 	const [file, setFile] = useState(null);
-	const [status, setStatus] = useState("ready")
-	const [percentage, setPercentage] = useState(0)
+	const [status, setStatus] = useState('ready');
+	const [percentage, setPercentage] = useState(0);
+	const [error, setError] = useState(false);
 
 	const dispatch = useDispatch();
 
 	const UploadImage = () => {
 		if (file === null) {
 			console.log('File Kosong!');
+			setError(true);
 		} else {
 			const fileName = new Date().getTime() + file.name;
 			const storage = getStorage(app);
 			const storageRef = ref(storage, fileName);
 
 			const uploadTask = uploadBytesResumable(storageRef, file);
-			setStatus("uploading")
+			setStatus('uploading');
 			// Register three observers:
 			// 1. 'state_changed' observer, called any time the state changes
 			// 2. Error observer, called on failure
@@ -40,7 +42,7 @@ const AddImage = (props) => {
 					const progress =
 						(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 					console.log('Upload is ' + progress + '% done');
-					setPercentage(progress)
+					setPercentage(progress);
 					switch (snapshot.state) {
 						case 'paused':
 							console.log('Upload is paused');
@@ -60,22 +62,44 @@ const AddImage = (props) => {
 					// For instance, get the download URL: https://firebasestorage.googleapis.com/...
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
 						dispatch(editElement({ _id: props.id, content: downloadURL }));
-						setStatus("uploaded")
+						setStatus('uploaded');
+						setError(false);
 						console.log('File available at', downloadURL);
 					});
 				}
 			);
 		}
 	};
-	//
+
+	const deleteImage = () => {
+		dispatch(editElement({ _id: props.id, content: '' }));
+		setStatus('ready');
+		setFile(null);
+	};
 
 	return (
-		<div className="block mx-20 mb-16 pb-2">
-			{status !== "uploaded" && (
+		<div className="block mx-20 mb-16 pb-2 relative">
+			
+			{status !== 'uploaded' && (
 				<p className="text-3xl font-thin mb-8">Image</p>
 			)}
-			
-			{status === "ready" && (
+			<button className='absolute right-0 top-0 hover:text-blue-500' onClick={() => dispatch(removeElement({ _id: props.id}))}>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					strokeWidth={1.5}
+					stroke="currentColor"
+					className="w-6 h-6"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
+			{status === 'ready' && (
 				<div>
 					<div className="flex justify-center border py-16 rounded-xl mb-8">
 						<input
@@ -91,6 +115,11 @@ const AddImage = (props) => {
 							onChange={(e) => setFile(e.target.files[0])}
 						/>
 					</div>
+					{error ? (
+						<p className="text-red-500">Please insert your image first</p>
+					) : (
+						<></>
+					)}
 					<button
 						className="border border-blue-500 px-8 py-2 text-blue-500 rounded-full"
 						onClick={UploadImage}
@@ -99,17 +128,27 @@ const AddImage = (props) => {
 					</button>
 				</div>
 			)}
-			{status === "uploading" && (
+			{status === 'uploading' && (
 				<div>
 					<div className="flex justify-center border py-16 rounded-xl px-4">
-						<h1 className='text-blue-500 text-lg'>Uploading {Math.round(percentage)} %</h1>
+						<h1 className="text-blue-500 text-lg">
+							Uploading {Math.round(percentage)} %
+						</h1>
 					</div>
 				</div>
 			)}
-			{status === "uploaded" && (
-				<div className='flex justify-center'>
-					<img src={image.content} alt="" className="max-w-2xl rounded-lg" />
-				</div>
+			{status === 'uploaded' && (
+				<>
+					<div className="flex justify-center">
+						<img src={image.content} alt="" className="max-w-2xl rounded-lg" />
+					</div>
+					<button
+						className="border border-blue-500 px-8 py-2 mt-4 text-blue-500 rounded-full"
+						onClick={deleteImage}
+					>
+						Change Image
+					</button>
+				</>
 			)}
 		</div>
 	);

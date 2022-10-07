@@ -17,7 +17,7 @@ const SinglePost = () => {
 
 	useEffect(() => {
 		fetchData()
-	}, []);
+	});
 
 	const fetchData = () => {
 		publicRequest.get(`/article/${id}`).then((response) => {
@@ -29,8 +29,9 @@ const SinglePost = () => {
 
 	return (
 		<div className="bg-white h-full pt-24 mx-60 mb-20 mt-10">
-			{article == null && <Error401 />}
+			{Object.keys(article) === 0 && <Error401 />}
 			{/* Tags Container */}
+
 			<div className="flex flex-row gap-4 mt-4 justify-center mb-16">
 				{tags.map((item, index) => (
 					<button
