@@ -17,7 +17,7 @@ const SinglePost = () => {
 
 	useEffect(() => {
 		fetchData()
-	});
+	},[id]);
 
 	const fetchData = () => {
 		publicRequest.get(`/article/${id}`).then((response) => {

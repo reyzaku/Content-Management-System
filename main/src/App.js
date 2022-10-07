@@ -3,9 +3,9 @@ import MainRouter from "./MainRouter";
 
 function App() {
   return (
-    <>
+    <div className="font-poppins">
       <MainRouter/>
-    </>
+    </div>
   );
 }
 

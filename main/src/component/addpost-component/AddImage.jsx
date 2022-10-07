@@ -11,11 +11,14 @@ import { editElement, removeElement } from '../../redux/ArticleReducers';
 import { useDispatch, useSelector } from 'react-redux';
 
 const AddImage = (props) => {
-	const image = useSelector((state) => state.article.element[props.id]);
+	const [image, setImage] = useState("")
 	const [file, setFile] = useState(null);
 	const [status, setStatus] = useState('ready');
 	const [percentage, setPercentage] = useState(0);
 	const [error, setError] = useState(false);
+
+	console.log(image)
+	console.log(props.id)
 
 	const dispatch = useDispatch();
 
@@ -64,6 +67,7 @@ const AddImage = (props) => {
 						dispatch(editElement({ _id: props.id, content: downloadURL }));
 						setStatus('uploaded');
 						setError(false);
+						setImage(downloadURL)
 						console.log('File available at', downloadURL);
 					});
 				}
@@ -140,7 +144,7 @@ const AddImage = (props) => {
 			{status === 'uploaded' && (
 				<>
 					<div className="flex justify-center">
-						<img src={image.content} alt="" className="max-w-2xl rounded-lg" />
+						<img src={image} alt="" className="max-w-2xl rounded-lg" />
 					</div>
 					<button
 						className="border border-blue-500 px-8 py-2 mt-4 text-blue-500 rounded-full"
