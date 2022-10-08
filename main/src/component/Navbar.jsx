@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Logo from '../media/Logo.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/UserReducers';
 
 const Navbar = () => {
 	const user = useSelector((state) => state.user.currentUser);
 	const [show, setShow] = useState(false);
+	const [menu, setMenu] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -14,13 +15,75 @@ const Navbar = () => {
 		dispatch(logout());
 		navigate('/');
 	};
+
 	return (
-		<nav className="bg-white shadow-sm">
-			<div className="mx-60 max-w-full">
-				<div className="relative flex h-16 items-center justify-between">
+		<nav className="bg-white shadow-sm sticky top-0">
+			<div className="desktop:mx-60 laptop:mx-40 tablet:mx-10 phone:mx-4 max-w-full">
+				{/* Mobile Menu Button */}
+				<div className="phone:flex tablet:flex laptop:hidden desktop:hidden">
+					<button
+						type="button"
+						class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+						aria-controls="mobile-menu"
+						aria-expanded="false"
+						onClick={() => setMenu(!menu)}
+					>
+						<span class="sr-only">Open main menu</span>
+						<svg
+							class="block h-6 w-6"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+							/>
+						</svg>
+						<svg
+							class="hidden h-6 w-6"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</button>
+				</div>
+				{menu && (
+					<div className="tablet:mx-5 phone:mx-2 py-8">
+						<div className="flex flex-col gap-4 mb-8">
+							<li className="list-none text-md text-center">
+								<Link to={`/`}>&#127969; Home</Link>
+							</li>
+							<li className="list-none text-md text-center">
+								<Link to={`/article`}>&#128240; Article</Link>
+							</li>
+							<li className="list-none text-md text-center">
+								<Link to={`/editor`}>&#128221; Create Post</Link>
+							</li>
+							<li className="list-none text-md text-center">
+								<Link to={`/editor`}>&#128187; My Dashboard</Link>
+							</li>
+						</div>
+					</div>
+				)}
+				{/* Desktop Navbar Menu */}
+				<div className="relative flex h-16 items-center justify-between desktop:flex laptop:flex tablet:hidden phone:hidden">
 					<div className="text-white basis-1/3" id="logo">
 						<Link to={'/'}>
-							<img src={Logo} alt="" className="block h-8 w-auto" />
+							<img src={Logo} alt="" className="block h-8 w-auto laptop:h-6" />
 						</Link>
 					</div>
 					<div className="text-black flex flex-row basis-1/3" id="search">
@@ -28,16 +91,16 @@ const Navbar = () => {
 							type="text"
 							name=""
 							id=""
-							className="w-full py-2 px-2 bg-slate-100 rounded-l-lg"
+							className="w-full desktop:py-2 laptop:py-1 px-2 bg-slate-100 rounded-l-lg"
 						/>
-						<button className="px-2 py-2 bg-blue-500 rounded-r-lg">
+						<button className="px-2 py-2 laptop:py-1 bg-blue-500 rounded-r-lg">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
 								viewBox="0 0 24 24"
 								strokeWidth={1.5}
 								stroke="currentColor"
-								className="w-6 h-6 text-white"
+								className="desktop:w-6 desktop:h-6 laptop:w-4 laptop:h-4 text-white"
 							>
 								<path
 									strokeLinecap="round"
@@ -61,7 +124,7 @@ const Navbar = () => {
 							// 	Logout
 							// </button>
 							<Link to={'/register'}>
-								<button className="text-blue-500 font-semibold text-sm rounded py-2 px-4 border border-slate-50">
+								<button className="text-blue-500 font-semibold desktop:text-sm laptop:text-xs rounded desktop:py-2 laptop:py-2 px-4 border border-slate-50">
 									Login/Register
 								</button>
 							</Link>
@@ -75,7 +138,7 @@ const Navbar = () => {
 									id="user-menu-button"
 									aria-expanded="false"
 									aria-haspopup="true"
-									onClick={() => (show ? setShow(false) : setShow(true))}
+									onClick={() => setShow(!show)}
 								>
 									<span class="sr-only">Open user menu</span>
 									<img
@@ -135,48 +198,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// <nav className="bg-white shadow-lg shadow-gray-100/70 h-16 flex mx-60 flex-row justify-between items-center">
-
-// </nav>
-// {
-// 	/* Break Into 3 Section */
-// }
-// <div className="flex flex-row items-center justify-between">
-// 	{/* Section 1 Logo Section*/}
-// 	<div className="flex-1 items-center">
-// 		<img src={Logo} alt="" className="w-1/4" />
-// 	</div>
-// 	{/* Section 2 Navlink Section*/}
-<div className="flex-1 flex flex-row items-center">
-	<input
-		type="text"
-		name="search"
-		id=""
-		className="px-2 w-full py-2 bg-blue-50 rounded-l-lg"
-	/>
-	<button className="px-2 py-2 bg-blue-500 rounded-r-lg">
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			strokeWidth={1.5}
-			stroke="currentColor"
-			className="w-6 h-6 text-white"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-			/>
-		</svg>
-	</button>
-</div>;
-// 	{/* Section 3 Auth Button Section*/}
-// 	<div className="flex-1 flex flex-row gap-4">
-// 		<button className="px-6 py-2">Login</button>
-// 		<button className="border border-blue-500 px-6 py-2 rounded-md">
-// 			Register
-// 		</button>
-// 	</div>
-// </div>;

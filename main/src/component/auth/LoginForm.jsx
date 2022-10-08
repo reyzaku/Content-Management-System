@@ -17,24 +17,24 @@ const LoginForm = () => {
 
 	return (
 		<div className="flex min-h-full items-center justify-center h-screen">
-			<div className="w-1/3 px-10 py-10 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
+			<div className="phone:w-full laptop:w-1/2 desktop:w-1/3 tablet:mx-10 px-10 py-10 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
 				<div className="flex item-center justify-center">
 					<img src={Logo} alt="" className="w-1/2 my-10 " />
 				</div>
-				<h3 className="text-center text-lg font-normal">
+				<h3 className="text-center text-lg font-normal phone:text-sm tablet:text-base">
 					Welcome to Foxhub &#128516;
 				</h3>
-				<h3 className="text-center text-2xl font-semibold mb-10">
+				<h3 className="text-center text-2xl font-semibold mb-10 phone:text-xl tablet:text-2xl">
 					Please Sign in to your account
 				</h3>
 				{error === '400' && (
-					<h3 className="text-center text-xl mb-10 text-red-500">
+					<h3 className="text-center phone:text-xl tablet:text-2xl mb-10 text-red-500">
 						There is an error, please try again &#128591;
 					</h3>
 				)}
 
 				{error === 'auth' && (
-					<h3 className="text-center text-xl mb-10 text-red-500">
+					<h3 className="text-center phone:text-xl tablet:text-2xl mb-10 text-red-500">
 						We cant find your account, please try again &#128591;
 					</h3>
 				)}

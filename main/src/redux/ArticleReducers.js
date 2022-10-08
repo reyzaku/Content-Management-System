@@ -35,6 +35,10 @@ const articleSlice = createSlice({
         deleteDraft: (state) => {
             state.element = []
             state.id = 0
+            state.title = ""
+            state.tags = []
+            state.cover_image = ""
+
         }
     }
 });

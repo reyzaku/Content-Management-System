@@ -137,7 +137,7 @@ const AddPost = () => {
 	};
 
 	return (
-		<div className="h-full pt-24 mx-60 mb-20 mt-10">
+		<div className="h-full pt-24 mb-20 mt-10 desktop:mx-60 laptop:mx-40 tablet:mx-10 phone:mx-4">
 			{/* Post Title Input Form */}
 			<div className="block mb-16">
 				<p className="text-3xl font-thin mb-8">Post Title</p>
@@ -334,17 +334,17 @@ const AddPost = () => {
 			{/* Button Create Post */}
 			<div className="block float-right">
 				<button
-					className="px-12 py-3 bg-blue-500 text-white rounded-xl shadow-lg"
+					className="px-12 py-3 bg-blue-500 text-white rounded-xl shadow-lg mx-4 mb-8"
 					onClick={createPost}
 				>
 					Create Post
 				</button>
 
 				<button
-					className="px-12 py-3 bg-red-500 text-white rounded-xl shadow-lg"
+					className="px-12 py-3 bg-red-500 text-white rounded-xl shadow-lg mb-8"
 					onClick={closeMenu}
 				>
-					Delete Post
+					Clear Post
 				</button>
 			</div>
 		</div>

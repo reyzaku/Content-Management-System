@@ -26,12 +26,12 @@ const RegisterForm = () => {
 
 	return (
 		<div className="flex min-h-full items-center justify-center h-screen">
-			<div className="w-1/3 px-10 py-10 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
+			<div className="phone:w-full laptop:w-1/2 desktop:w-1/3 tablet:mx-10 px-10 py-10 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
 				<div className="flex item-center justify-center">
 					<img src={Logo} alt="" className="w-1/2 my-10 " />
 				</div>
-				<h3 className="text-center text-lg font-normal">Welcome to Foxhub &#128516;</h3>
-				<h3 className="text-center text-2xl font-semibold mb-10">
+				<h3 className="text-center text-lg font-normal phone:text-sm tablet:text-base">Welcome to Foxhub &#128516;</h3>
+				<h3 className="text-center text-2xl font-semibold mb-10 phone:text-xl tablet:text-2xl">
 					Register your account
 				</h3>
 				{/* <form> */}
@@ -76,7 +76,7 @@ const RegisterForm = () => {
 					</div>
 
 					<div className="mb-10">
-						<div className="flex w-full gap-10">
+						<div className="flex w-full phone:flex-col tablet:flex-row gap-10">
 							<div>
 								<label className="">
 									First Name

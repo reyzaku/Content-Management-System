@@ -5,10 +5,9 @@ import Sidebar from '../component/timeline-component/Sidebar';
 
 const Homepage = () => {
 	return (
-		<div className="h-screen mx-60 flex flex-row gap-10 mt-10">
+		<div className="h-screen desktop:mx-60 laptop:mx-40 tablet:mx-10 phone:mx-4 flex flex-row gap-10 mt-10 w-max-full">
 			<ExploreTab/>
 			<Timeline/>
-			<Sidebar/>
 		</div>
 	);
 };
