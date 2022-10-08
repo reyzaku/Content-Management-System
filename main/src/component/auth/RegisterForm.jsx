@@ -25,8 +25,8 @@ const RegisterForm = () => {
 	}
 
 	return (
-		<div className="flex min-h-full items-center justify-center h-screen">
-			<div className="phone:w-full laptop:w-1/2 desktop:w-1/3 tablet:mx-10 px-10 py-10 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
+		<div className="flex items-center justify-center">
+			<div className="phone:w-full laptop:w-1/2 desktop:w-1/3 tablet:mx-10 px-10 py-10 laptop:my-24 desktop:my-2 bg-white rounded-lg shadow-xl shadow-blue-200/50 flex-col">
 				<div className="flex item-center justify-center">
 					<img src={Logo} alt="" className="w-1/2 my-10 " />
 				</div>
