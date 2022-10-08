@@ -33,7 +33,7 @@ const MainRouter = () => {
 					path="/register"
 					element={user ? <Navigate to="/" /> : <Register />}
 				/>
-				<Route exact path="/editor" element={<AddPost />} />
+				<Route exact path="/editor" element={user ? <AddPost /> : <Navigate to={"/login"}/>} />
 				<Route exact path="/article/:id" element={<SinglePost />} />
 				<Route exact path="/article" element={<SinglePost />} />
 			</Routes>
