@@ -7,6 +7,7 @@ const currentUser = user && JSON.parse(user).currentUser;
 const TOKEN = currentUser?.token;
 
 export const publicRequest = axios.create({
+    withCredentials: true,
     baseURL: BASE_URL,
 });
 

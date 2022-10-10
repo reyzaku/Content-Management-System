@@ -3,6 +3,7 @@ import Logo from '../media/Logo.png';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/UserReducers';
+import { authRequest } from '../utils/AxiosInstance';
 
 const Navbar = () => {
 	const user = useSelector((state) => state.user.currentUser);
@@ -11,7 +12,8 @@ const Navbar = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const LogoutHandle = () => {
+	const LogoutHandle = async () => {
+		await authRequest.delete("/auth/logout")
 		dispatch(logout());
 		navigate('/');
 	};
