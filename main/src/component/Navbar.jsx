@@ -12,10 +12,17 @@ const Navbar = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
+	const [search, setSearch] = useState('');
+
 	const LogoutHandle = async () => {
-		await authRequest.delete("/auth/logout")
+		await authRequest.delete('/auth/logout');
 		dispatch(logout());
+		setShow(false);
 		navigate('/');
+	};
+
+	const SearchHandle = () => {
+		navigate(`/article/${search}`);
 	};
 
 	return (
@@ -91,11 +98,13 @@ const Navbar = () => {
 					<div className="text-black flex flex-row basis-1/3" id="search">
 						<input
 							type="text"
-							name=""
-							id=""
 							className="w-full desktop:py-2 laptop:py-1 px-2 bg-slate-100 rounded-l-lg"
+							onChange={(e) => setSearch(e.target.value)}
 						/>
-						<button className="px-2 py-2 laptop:py-1 bg-blue-500 rounded-r-lg">
+						<button
+							className="px-2 py-2 laptop:py-1 bg-blue-500 rounded-r-lg"
+							onClick={SearchHandle}
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -174,6 +183,12 @@ const Navbar = () => {
 									>
 										Settings
 									</button>
+									<section
+										className=" w-screen h-full cursor-pointer "
+										onClick={() => {
+											setShow(false);
+										}}
+									></section>
 									{user ? (
 										<button
 											onClick={LogoutHandle}

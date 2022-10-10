@@ -5,9 +5,7 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Navigate,
-	useLocation,
 } from 'react-router-dom';
-import Navbar from './component/Navbar';
 import AddPost from './pages/AddPost';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
@@ -19,8 +17,6 @@ const MainRouter = () => {
 
 	return (
 		<Router>
-			{/* {location.pathname === '/login' || '/register' ? <></> : <Navbar />} */}
-			<Navbar/>
 			<Routes>
 				<Route exact path="/" element={<Homepage />} />
 				<Route
@@ -35,7 +31,7 @@ const MainRouter = () => {
 				/>
 				<Route exact path="/editor" element={user ? <AddPost /> : <Navigate to={"/login"}/>} />
 				<Route exact path="/article/:id" element={<SinglePost />} />
-				<Route exact path="/article" element={<SinglePost />} />
+				{/* <Route exact path="/article" element={<SinglePost />} /> */}
 			</Routes>
 		</Router>
 	);
