@@ -1,11 +1,11 @@
-import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
+import Navbar from "./component/Navbar";
+import MainRouter from "./MainRouter";
 
 function App() {
   return (
-    <>
-      <Homepage/>
-    </>
+    <div className="font-poppins relative">
+      <MainRouter/>
+    </div>
   );
 }
 
